@@ -3,12 +3,23 @@ import './App.css'
 
 function App() {
   const [countries, setCountries] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     fetch('https://xcountries-backend.labs.crio.do/all')
       .then(response => response.json())
-      .then(data => setCountries(data))
-      .catch(error => console.error('Error fetching countries:', error));
+      .then(data => {
+        setCountries(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching countries:', error);
+        setLoading(false);
+      });
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
